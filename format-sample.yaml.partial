@@ -1,0 +1,1 @@
+cov_configure_args: {"ctc":"tasking:tricore","cctc":"tasking:tricore","cptc":"tasking_cxx:tricore"}

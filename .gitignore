@@ -1,0 +1,4 @@
+# Scan artifacts from the local machine used while authoring this repo.
+# Contain user paths, hostnames, and installed compiler paths — not shipping.
+idir/
+.codesight/

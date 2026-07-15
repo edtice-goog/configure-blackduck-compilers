@@ -1,0 +1,9 @@
+build_cmd: ../waf build
+build_dir: /Users/theUser/myProject/ardour/build/
+skip_build: False
+verbose: True
+project_name: ardour_mac
+project_version: may-4-2021
+bd_url: https://...
+api_token: <token>
+insecure: False
