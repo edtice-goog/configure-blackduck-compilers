@@ -187,7 +187,7 @@ Wildcards work in keys:
 cov_configure_args: {"*g++":"gcc","*-gcc":"gcc"}
 ```
 
-**If the line already exists**, merge your new entries into the existing dict. Don't replace anyone else's mappings. Example — before:
+**If the line already exists**, merge your new entries into the existing dictionary. Don't remove other mappings.  This yaml syntax is sometimes referred to as a flow mapping or dictionary and is a standard syntax despite being somewhat awkward. Example — before:
 
 ```yaml
 cov_configure_args: {"ctc":"tasking:tricore"}
