@@ -15,8 +15,6 @@ There is also a companion Claude Code skill (`configure-blackduck-compilers/`) t
 3. [Step 1 — Confirm you actually have unconfigured compilers](#step-1--confirm-you-actually-have-unconfigured-compilers)
 4. [Step 2 — Extract the executable name(s)](#step-2--extract-the-executable-names)
 5. [Step 3 — Look up the compiler type](#step-3--look-up-the-compiler-type)
-6. [Step 4 — Choose the right type when there are several](#step-4--choose-the-right-type-when-there-are-several)
-7. [Step 5 — Add the `cov_configure_args` entry to your YAML config](#step-5--add-the-cov_configure_args-entry-to-your-yaml-config)
 8. [Step 6 — Rerun and verify](#step-6--rerun-and-verify)
 9. [Worked example: MSVC `cl.exe`](#worked-example-msvc-clexe)
 10. [Worked example: fleet of cross-compilers](#worked-example-fleet-of-cross-compilers)
@@ -27,7 +25,7 @@ There is also a companion Claude Code skill (`configure-blackduck-compilers/`) t
 
 ## 1. Why this task exists
 
-`blackduck-c-cpp` is a Python wrapper around Synopsys/Black Duck Coverity's `cov-build`. It intercepts your build, sees which compilers ran, and asks Coverity to capture each translation unit. Coverity ships with configuration templates for hundreds of compilers — GCC, MSVC, IAR, Green Hills, TI, etc. — but it needs to know **which template applies to each executable it saw**.
+`blackduck-c-cpp` is a Python wrapper around Black Duck Coverity's `cov-build`. It intercepts your build, sees which compilers ran, and asks Coverity to capture each translation unit. Coverity ships with configuration templates for hundreds of compilers — GCC, MSVC, IAR, Green Hills, TI, etc. — but it needs to know **which template applies to each executable it saw**.
 
 > **Important distinction.** Coverity's `cov-configure` itself does **not** pre-configure any compiler. Every mapping must be told to it explicitly. However, the `blackduck-c-cpp` wrapper layered on top of Coverity does set a default site-wide capture list (`COVERITY_SITE_CC`) that covers the GCC/binutils family out of the box:
 >
