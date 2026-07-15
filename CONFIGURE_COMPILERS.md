@@ -15,6 +15,8 @@ There is also a companion Claude Code skill (`configure-blackduck-compilers/`) t
 3. [Step 1 — Confirm you actually have unconfigured compilers](#step-1--confirm-you-actually-have-unconfigured-compilers)
 4. [Step 2 — Extract the executable name(s)](#step-2--extract-the-executable-names)
 5. [Step 3 — Look up the compiler type](#step-3--look-up-the-compiler-type)
+6. [Step 4 — Choose the right type when there are several](#step-4--choose-the-right-type-when-there-are-several)
+7. [Step 5 — Add the `cov_configure_args` entry to your YAML config](#step-5--add-the-cov_configure_args-entry-to-your-yaml-config)
 8. [Step 6 — Rerun and verify](#step-6--rerun-and-verify)
 9. [Worked example: MSVC `cl.exe`](#worked-example-msvc-clexe)
 10. [Worked example: fleet of cross-compilers](#worked-example-fleet-of-cross-compilers)
