@@ -1,0 +1,30 @@
+# Sample blackduck-c-cpp config for skip_build mode (reuse a manual Coverity capture).
+# Same format rules as the vanilla config: "key: value" per line, True/False,
+# UNQUOTED values, "#" comments.
+
+skip_build: True
+
+# Local Coverity install (REQUIRED in skip_build — no GCP auto-download here).
+coverity_root: C:\Coverity\cov-analysis-win64-2026.3.0
+
+# The idir you produced with:  cov-build --dir <this> --emit-link-units <clean build>
+# If this dir contains build-log.txt it is used directly as the idir; otherwise
+# the tool looks for <cov_output_dir>/idir.
+cov_output_dir: C:\capture\idir
+
+# Required by the argument parser even though nothing is built in this mode.
+build_dir: C:\path\to\project
+
+# Tool workspace (zips, BDIO, logs). Keep OUTSIDE build_dir.
+output_dir: C:\capture\bdcpp-output
+
+project_name: myproject
+project_version: 1.0.0
+
+bd_url: https://sca.example.blackduck.com/
+api_token: REPLACE_WITH_API_TOKEN
+
+# sig + bdba are the meaningful matchers for a C/C++ capture.
+modes: sig,bdba
+
+verbose: True
