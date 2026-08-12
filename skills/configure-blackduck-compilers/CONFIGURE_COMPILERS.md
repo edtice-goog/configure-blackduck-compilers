@@ -52,7 +52,7 @@ The fix is to add an entry to a YAML key called `cov_configure_args` that tells 
 
 - The **intermediate directory** from the previous run, commonly called `idir/`. If you ran with `--output_dir`/`-o`, it's whatever you passed there.
 - The **YAML config file** you're passing to `blackduck-c-cpp` via `-c` (or a positional argument). This is the file you'll edit.
-- A Coverity installation (`cov-configure` on your PATH) so you can list all supported compiler types. Not strictly required — you can use the bundled `compile-types.txt` in this repository instead — but the live output is authoritative for your installed version.
+- A Coverity installation (`cov-configure` on your PATH) so you can list all supported compiler types. Not strictly required — you can use the `references/compile-types.txt` bundled with this skill instead — but the live output is authoritative for your installed version.
 - Read/write access to both directories above.
 
 ---
@@ -106,7 +106,7 @@ Every Coverity-supported compiler has a **type name** like `msvc`, `gcc`, `taski
 cov-configure --list-compiler-types
 ```
 
-**Fallback — the `compile-types.txt` shipped with this repo.** Use only if `cov-configure` isn't on your PATH. Be aware it may lag your installed Coverity version.
+**Fallback — the `references/compile-types.txt` bundled with this skill.** Use only if `cov-configure` isn't on your PATH. Be aware it may lag your installed Coverity version.
 
 Each line has this format:
 
@@ -314,7 +314,7 @@ Step 6 — rerun. Two wildcard entries handled four executables. `unconfigured-c
 - **The scan ran, `unconfigured-compilers` is empty, but Black Duck still misses code.** This isn't a compiler-configuration problem — check `blackduck-c-cpp.log` for capture warnings, verify `build_cmd` actually builds what you think it does, and confirm the affected source files are on disk when the scan runs.
 - **The YAML edit didn't take effect.** Confirm you edited the file you're actually passing to the tool (`-c <path>` on the command line). If you have multiple candidate YAMLs, the tool uses the one it's told to.
 - **`unconfigured-compilers` keeps listing the same executable after you configured it.** Common causes: the key includes `.exe`, the key is a full path instead of a basename, or the executable's real basename differs from what you expected. Print the exact bytes with `xxd` / `hexdump` if you suspect trailing whitespace or a hidden character.
-- **`cov-configure --list-compiler-types` says command not found.** Source your Coverity environment (`bin/cov-configure` on Linux, `set-path.bat` or the equivalent on Windows), or use the bundled `compile-types.txt` in this repo.
+- **`cov-configure --list-compiler-types` says command not found.** Source your Coverity environment (`bin/cov-configure` on Linux, `set-path.bat` or the equivalent on Windows), or use the `references/compile-types.txt` bundled with this skill.
 - **A compiler you know is supported still won't match.** Look at the compiler's actual `--version` output and search descriptions in `compile-types.txt` for a matching phrase — some toolchains alias unexpectedly.
 - **The warning wasn't visible in the console.** Set `verbose: True` in your YAML and rerun; the warning shows more prominently in verbose mode.
 - **A plain GCC-family executable (`gcc`, `g++`, `*-gcc`, `*-g++`, `ar`, `ld`) shows up in `unconfigured-compilers`.** Unusual — those are pre-configured by the `blackduck-c-cpp` wrapper via its default `COVERITY_SITE_CC` list. Something else is off. Check: (a) your `blackduck-c-cpp` version isn't ancient, (b) nothing in your YAML or environment is overriding `COVERITY_SITE_CC`, (c) the executable actually is a GCC and not a differently named binary that happens to end in `gcc` (e.g., some Renesas tools). If all three check out, adding an explicit mapping is fine as a workaround but you should also file an issue upstream.

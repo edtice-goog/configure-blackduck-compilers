@@ -1,29 +1,24 @@
-# configure-blackduck-compilers
+# Black Duck C/C++ skills
 
-Docs and a Claude Code skill for resolving "unconfigured compiler" warnings from the [`blackduck-c-cpp`](https://pypi.org/project/blackduck-c-cpp/) scan tool.
+A collection of skills for scanning C/C++ projects with Black Duck SCA and turning the
+results into SARIF. Each skill is a self-contained directory under `skills/` with its own
+`SKILL.md` and bundled resources.
 
-When `blackduck-c-cpp` encounters a compiler it doesn't recognize, it writes the executable path to `<idir>/scan-transparency/unconfigured-compilers` and continues — a subtle warning that's easy to miss. If it's missed, the scan appears successful but the affected code is silently absent from Black Duck's analysis. This repo contains two ways to fix that:
+## Skills
 
-- **[CONFIGURE_COMPILERS.md](CONFIGURE_COMPILERS.md)** — step-by-step human walkthrough with worked examples, troubleshooting, and reference tables.
-- **[skill/configure-blackduck-compilers/](skill/configure-blackduck-compilers/)** — a Claude Code skill that automates the same process. Drop it into `~/.claude/skills/` (user-scoped) or `.claude/skills/` (project-scoped) and invoke by asking Claude about `blackduck-c-cpp`, `unconfigured compilers`, or `cov_configure_args`.
+| Skill | What it does |
+|-------|--------------|
+| [`skills/run-blackduck-c-cpp`](skills/run-blackduck-c-cpp/SKILL.md) | **Default scan.** Run `blackduck-c-cpp` and let it drive the Coverity build capture, then upload signature + binary (BDBA) results to Black Duck. |
+| [`skills/run-blackduck-c-cpp-skip-build`](skills/run-blackduck-c-cpp-skip-build/SKILL.md) | **Advanced/debug.** Reuse a Coverity `idir` you captured yourself (`skip_build`). Requires local Coverity binaries. Good for verifying capture offline or re-scanning without rebuilding. |
+| [`skills/run-blackduck-sarif-formatter`](skills/run-blackduck-sarif-formatter/SKILL.md) | Convert a Black Duck project-version's findings to SARIF 2.1.0. Knows the trailing-slash URL gotcha and the policy-violation filter. |
+| [`skills/configure-blackduck-compilers`](skills/configure-blackduck-compilers/SKILL.md) | Fix "unconfigured compiler" warnings by mapping compiler executables to Coverity compiler types via `cov_configure_args`. |
 
-## Quick start
+## Documentation
 
-1. Read [CONFIGURE_COMPILERS.md](CONFIGURE_COMPILERS.md) once so you understand the shape of the problem.
-2. If you have Claude Code, copy `skill/configure-blackduck-compilers/` into your skills directory and let the skill drive the loop.
-3. Otherwise follow the six numbered steps in the doc by hand.
+- [`docs/blackduck-c-cpp-to-sarif-workflow.md`](docs/blackduck-c-cpp-to-sarif-workflow.md) — human-readable end-to-end runbook (build → capture → scan → BOM → SARIF), with a worked example and the lessons the skills encode.
 
-## What's in `skill/configure-blackduck-compilers/`
+## Typical flow
 
-- `SKILL.md` — trigger conditions, algorithm, and edit rules Claude follows.
-- `references/compile-types.txt` — bundled snapshot of `cov-configure --list-compiler-types` used when Coverity isn't on `PATH`. Refresh this when your Coverity install upgrades.
-
-## Sample artifacts
-
-- [`documentation_example.yaml`](documentation_example.yaml) — a minimal `blackduck-c-cpp` YAML config, from upstream docs.
-- [`format-sample.yaml.partial`](format-sample.yaml.partial) — one-line example of a `cov_configure_args` entry showing the expected flow syntax.
-- [`compile-types.txt`](compile-types.txt) — full unfiltered `cov-configure --list-compiler-types` output at the top level for easy browsing/grep.
-
-## License
-
-TBD.
+1. Build your C/C++ project and scan it — [`run-blackduck-c-cpp`](skills/run-blackduck-c-cpp/SKILL.md) (or the `skip_build` variant for manual capture control).
+2. If the scan warns about unconfigured compilers — [`configure-blackduck-compilers`](skills/configure-blackduck-compilers/SKILL.md), then re-scan.
+3. Convert the resulting Black Duck BOM to SARIF — [`run-blackduck-sarif-formatter`](skills/run-blackduck-sarif-formatter/SKILL.md).
