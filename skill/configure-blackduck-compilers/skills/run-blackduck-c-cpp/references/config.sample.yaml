@@ -1,0 +1,33 @@
+# Sample blackduck-c-cpp config (vanilla capture — tool builds the project itself).
+# Format notes: configargparse default parser, NOT full YAML.
+#   - one "key: value" per line
+#   - booleans are True / False (capitalized)
+#   - values are UNQUOTED (quotes are kept literally and will break paths/tokens)
+#   - "#" starts a comment
+
+project_name: myproject
+project_version: 1.0.0
+
+bd_url: https://sca.example.blackduck.com/
+# Paste the token raw and unquoted, OR delete this line and export
+# BLACKDUCK_API_TOKEN in the environment instead.
+api_token: REPLACE_WITH_API_TOKEN
+
+# Where to run the build, and the build command itself.
+# The build MUST be clean so Coverity captures every compilation.
+build_dir: /path/to/project
+build_cmd: cmake --build build --clean-first
+
+# Optional: point at a local Coverity install. If omitted, blackduck-c-cpp
+# downloads a mini Coverity package from Google Cloud Storage (needs
+# outbound *.googleapis.com:443 and Black Duck entitlement).
+# coverity_root: /opt/coverity/cov-analysis-linux64-2026.3.0
+
+# Tool workspace (zips, BDIO, logs). Keep this OUTSIDE build_dir.
+output_dir: /path/to/bdcpp-output
+
+# all = pkg_mgr + sig + bdba. On Windows pkg_mgr is a no-op; use sig,bdba
+# to avoid ancillary noise.
+modes: all
+
+verbose: True
