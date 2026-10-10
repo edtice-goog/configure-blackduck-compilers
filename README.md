@@ -22,3 +22,18 @@ results into SARIF. Each skill is a self-contained directory under `skills/` wit
 1. Build your C/C++ project and scan it — [`run-blackduck-c-cpp`](skills/run-blackduck-c-cpp/SKILL.md) (or the `skip_build` variant for manual capture control).
 2. If the scan warns about unconfigured compilers — [`configure-blackduck-compilers`](skills/configure-blackduck-compilers/SKILL.md), then re-scan.
 3. Convert the resulting Black Duck BOM to SARIF — [`run-blackduck-sarif-formatter`](skills/run-blackduck-sarif-formatter/SKILL.md).
+
+## Repository layout
+
+Each skill is a self-contained directory under `skills/`:
+
+```
+skills/<skill-name>/
+  SKILL.md       # required — frontmatter (name, description) + instructions
+  README.md      # optional — human overview
+  references/    # optional — bundled samples, catalogs, helper scripts
+```
+
+A skill may keep other supporting files beside its `SKILL.md` (for example, `configure-blackduck-compilers` has a long-form guide and sample configs). Cross-skill docs live in `docs/`; this top-level `README.md` is the collection index.
+
+**Adding a skill:** create `skills/<skill-name>/` with its own `SKILL.md` (and `references/` if needed), add a row to the Skills table above, and keep everything at the repo root under `skills/` — never nest a skill inside another skill's directory.
